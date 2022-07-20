@@ -34,3 +34,10 @@ class SharePoint:
         file_url = f'/sites/{SHAREPOINT_SITE_NAME}/{SHAREPOINT_DOC}/{folder_name}/{file_name}'
         file = File.open_binary(conn, file_url)
         return file.content
+
+    def upload_file(self, file_name, folder_name, content):
+        conn = self._auth()
+        target_folder_url = f'/sites/{SHAREPOINT_SITE_NAME}/{SHAREPOINT_DOC}/{folder_name}'
+        target_folder = conn.web.get_folder_by_server_relative_path(target_folder_url)
+        response = target_folder.upload_file(file_name, content).execute_query()
+        return response
