@@ -41,3 +41,10 @@ class SharePoint:
         target_folder = conn.web.get_folder_by_server_relative_path(target_folder_url)
         response = target_folder.upload_file(file_name, content).execute_query()
         return response
+    
+    def get_list(self, list_name):
+        conn = self._auth()
+        target_list = conn.web.lists.get_by_title(list_name)
+        items = target_list.items.get().execute_query()
+        return items
+        

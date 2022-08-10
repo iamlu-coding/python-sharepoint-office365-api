@@ -3,9 +3,11 @@ cffi==1.15.1
 charset-normalizer==2.1.0
 cryptography==37.0.4
 django-environ==0.9.0
+et-xmlfile==1.1.0
 idna==3.3
 msal==1.18.0
 Office365-REST-Python-Client==2.3.13
+openpyxl==3.0.10
 pycparser==2.21
 PyJWT==2.4.0
 pytz==2022.1
