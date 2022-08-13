@@ -1,3 +1,4 @@
+from urllib import response
 import environ
 from office365.sharepoint.client_context import ClientContext
 from office365.runtime.auth.user_credential import UserCredential
@@ -40,6 +41,18 @@ class SharePoint:
         target_folder_url = f'/sites/{SHAREPOINT_SITE_NAME}/{SHAREPOINT_DOC}/{folder_name}'
         target_folder = conn.web.get_folder_by_server_relative_path(target_folder_url)
         response = target_folder.upload_file(file_name, content).execute_query()
+        return response
+    
+    def upload_file_in_chunks(self, file_path, folder_name, chunk_size, chunk_uploaded=None, **kwargs):
+        conn = self._auth()
+        target_folder_url = f'/sites/{SHAREPOINT_SITE_NAME}/{SHAREPOINT_DOC}/{folder_name}'
+        target_folder = conn.web.get_folder_by_server_relative_path(target_folder_url)
+        response = target_folder.files.create_upload_session(
+            source_path=file_path,
+            chunk_size=chunk_size,
+            chunk_uploaded=chunk_uploaded,
+            **kwargs
+        ).execute_query()
         return response
     
     def get_list(self, list_name):

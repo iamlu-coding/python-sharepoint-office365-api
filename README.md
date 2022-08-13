@@ -15,3 +15,28 @@ To run this project, you will need to add the following environment variables to
 
 `sharepoint_doc_library`
 
+
+## Installation
+
+Create Virtual Environment  
+
+```bash
+  python -m venv env
+```
+
+Activate Environment
+```bash
+  source env/Scripts/activate
+```
+
+Install Packages
+```bash
+  pip install -r requirements.txt
+```
+
+Install Office365 API Package Directly from Github
+```bash
+  pip install git+https://github.com/vgrem/Office365-REST-Python-Client.git#egg=Office365-REST-Python-Client
+```
+
+    
