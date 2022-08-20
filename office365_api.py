@@ -3,6 +3,7 @@ import environ
 from office365.sharepoint.client_context import ClientContext
 from office365.runtime.auth.user_credential import UserCredential
 from office365.sharepoint.files.file import File
+import datetime
 
 env = environ.Env()
 environ.Env.read_env()
@@ -35,6 +36,20 @@ class SharePoint:
         file_url = f'/sites/{SHAREPOINT_SITE_NAME}/{SHAREPOINT_DOC}/{folder_name}/{file_name}'
         file = File.open_binary(conn, file_url)
         return file.content
+    
+    def download_latest_file(self, folder_name):
+        date_format = "%Y-%m-%dT%H:%M:%SZ"
+        files_list = self._get_files_list(folder_name)
+        file_dict = {}
+        for file in files_list:
+            dt_obj = datetime.datetime.strptime(file.time_last_modified, date_format)
+            file_dict[file.name] = dt_obj
+        # sort dict object to get the latest file
+        file_dict_sorted = {key:value for key, value in sorted(file_dict.items(), key=lambda item:item[1], reverse=True)}    
+        latest_file_name = next(iter(file_dict_sorted))
+        content = self.download_file(latest_file_name, folder_name)
+        return latest_file_name, content
+        
 
     def upload_file(self, file_name, folder_name, content):
         conn = self._auth()
