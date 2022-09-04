@@ -76,3 +76,19 @@ class SharePoint:
         items = target_list.items.get().execute_query()
         return items
         
+    def get_file_properties_from_folder(self, folder_name):
+        files_list = self._get_files_list(folder_name)
+        properties_list = []
+        for file in files_list:
+            file_dict = {
+                'file_id': file.unique_id,
+                'file_name': file.name,
+                'major_version': file.major_version,
+                'minor_version': file.minor_version,
+                'file_size': file.length,
+                'time_created': file.time_created,
+                'time_last_modified': file.time_last_modified
+            }
+            properties_list.append(file_dict)
+            file_dict = {}
+        return properties_list
